@@ -1,0 +1,24 @@
+- name: deploy application
+  hosts: app
+  roles:
+    - application
+  
+  tasks:
+    - name: install common dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - curl
+          - ca-certificates
+        state: present
+    
+    - name: install virtualization dependencies
+      shell: |
+       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - &&
+       add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    
+    - name: setup virtualization engine
+      apt:
+        name: 
+          - docker-ce
+        state: present
