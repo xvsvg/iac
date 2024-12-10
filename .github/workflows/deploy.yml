@@ -1,4 +1,4 @@
-name: Deploy Application
+name: deploy application
 
 on:
   push:
@@ -52,5 +52,5 @@ jobs:
       - name: run playbooks
         run: |
           ansible-playbook -i \
-          ansible/inventory/${{ needs.environment-set.outputs.environment-key }}/hosts.ini \
-          ansible/playbooks/${{ needs.environment-set.outputs.environment-key }}/deploy.yml
+          ansible/inventory/${{ needs.environment-set.outputs.environment }}/hosts.ini \
+          ansible/playbooks/${{ needs.environment-set.outputs.environment }}/deploy.yml

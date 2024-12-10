@@ -1,2 +1,1 @@
-development_host: 89.169.151.170
-development_user: admin
+ansible_user: admin

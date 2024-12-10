@@ -1,0 +1,12 @@
+- name: pull applicaction image
+  docker_image:
+    name: timurbabs/django
+    source: pull
+    
+- name: start application
+  docker_container:
+    name: app
+    image: timurbabs/django
+    state: started
+    ports:
+      - "8000:8000"

@@ -1,9 +1,6 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/focal64"
 
-	config.vm.provider "virtualbox" do |vb|
-		vb.gui = true
-	end
   # Количество требуемых машин
   SERVERS = 1
   # Имя сетевого интерфейса для организации моста
@@ -14,7 +11,7 @@ Vagrant.configure("2") do |config|
       host.vm.network "private_network", ip: ip
       host.vm.network "public_network", bridge: BRIDGE
       host.vm.hostname = hostname
-      host.vm.provision "shell", inline: "apt-get update && apt-get install -y python-minimal"
+      host.vm.provision "shell", inline: "apt-get update && apt-get install -y python2-minimal"
       yield host if block_given?
     end
   end
