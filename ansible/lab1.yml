@@ -1,4 +1,5 @@
 - name: deploy application
+  become: yes
   hosts: app
   roles:
     - docker

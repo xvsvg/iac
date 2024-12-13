@@ -1,12 +1,13 @@
 - name: pull applicaction image
   docker_image:
-    name: timurbabs/django
+    name: "{{ application_image }}"
     source: pull
-    
-- name: start application
+
+- name: redeploy application
   docker_container:
     name: app
-    image: timurbabs/django
+    image: "{{ application_image }}"
     state: started
     ports:
-      - "8000:8000"
+      - "{{ application_external_port }}:{{ application_internal_port }}"
+    recreate: yes

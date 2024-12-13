@@ -49,8 +49,8 @@ jobs:
           sudo apt update
           sudo apt install -y ansible
 
-      - name: run playbooks
-        run: |
-          ansible-playbook -i \
-          ansible/inventory/${{ needs.environment-set.outputs.environment }}/hosts.ini \
-          ansible/playbooks/${{ needs.environment-set.outputs.environment }}/deploy.yml
+      # - name: run playbooks
+      #   run: |
+      #     ansible-playbook -i \
+      #     ansible/inventory/${{ needs.environment-set.outputs.environment }}/hosts.ini \
+      #     ansible/playbooks/${{ needs.environment-set.outputs.environment }}/deploy.yml
