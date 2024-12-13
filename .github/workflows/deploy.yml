@@ -1,0 +1,56 @@
+name: deploy application
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  environment-set:
+    name: set environment
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.extract-branch.outputs.branch }}
+      environment: ${{ steps.setup-env.outputs.environment-key }}
+      runner-label: ${{ steps.setup-label.outputs.runner-label }}
+    steps:
+      - name: extract branch
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_HEAD_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract-branch
+
+      - name: setup environment
+        shell: bash
+        run: echo environment-key=${{ 'dev' }} >> $GITHUB_OUTPUT
+        id: setup-env
+
+      - name: select runner label
+        shell: bash
+        run: echo runner-label=${{ 'iac-vm' }} >> $GITHUB_OUTPUT
+        id: setup-label
+
+  deploy:
+    name: deploy application
+    needs: environment-set
+    runs-on:
+      [
+        self-hosted,
+        Linux,
+        X64,
+        "${{ needs.environment-set.outputs.runner-label }}",
+      ]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: install ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+
+      # - name: run playbooks
+      #   run: |
+      #     ansible-playbook -i \
+      #     ansible/inventory/${{ needs.environment-set.outputs.environment }}/hosts.ini \
+      #     ansible/playbooks/${{ needs.environment-set.outputs.environment }}/deploy.yml
